@@ -10,6 +10,15 @@ void* myFunction(void* arg)
    for(unsigned int i = 0; i < 10; ++i) {
        count++;
        std::cout << "Thread #" << actual_arg << " count = " << count << std::endl;
+       
+    //  Random wait - This code is just to ensure that the threads
+     //  show data sharing problems
+     int max = rand() % 100000;
+  
+     for (int x = 0; x < max; x++);
+  
+     // End of random wait code
+
    }
     
    pthread_exit(NULL);
