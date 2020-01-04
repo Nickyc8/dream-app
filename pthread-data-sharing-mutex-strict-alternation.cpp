@@ -36,6 +36,14 @@ void* myFunction(void* arg)
       //       You can use the C++ NOT operator (!)
       //       to toggle back and forth.
 
+
+    //  Random wait - This code is just to ensure that the threads
+     //  show data sharing problems
+     int max = rand() % 100000;
+  
+     for (int x = 0; x < max; x++);
+  
+     // End of random wait code
         
 	}
     
