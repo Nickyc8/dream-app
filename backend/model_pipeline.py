@@ -21,6 +21,7 @@ backend/
 from __future__ import annotations
 
 from dataclasses import dataclass
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
@@ -30,14 +31,9 @@ import re
 import joblib
 import numpy as np
 import pandas as pd
-import umap
-import hdbscan
 
-from hdbscan.prediction import approximate_predict
 from nltk.corpus import stopwords
-from sentence_transformers import SentenceTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import normalize
 
 # -----------------------------
 # Configuration
@@ -326,7 +322,13 @@ GENERIC_CLUSTER_KEYWORDS = {
 
 def get_stopwords() -> set[str]:
     """Load English stopwords from NLTK."""
-    return set(stopwords.words("english"))
+    try:
+        return set(stopwords.words("english"))
+    except LookupError:
+        import nltk
+
+        nltk.download("stopwords", quiet=True)
+        return set(stopwords.words("english"))
 
 
 STOPWORDS = None  # lazy-loaded
@@ -408,11 +410,11 @@ def infer_themes(cleaned_text: str, fallback_keywords: list[str]) -> list[str]:
 @dataclass
 class DreamArtifacts:
     """In-memory objects needed for inference and plotting."""
-    embed_model: SentenceTransformer
+    embed_model: Any
     reducer_10d: Any
     reducer_2d: Any
     reducer_3d: Any
-    clusterer: hdbscan.HDBSCAN
+    clusterer: Any
     plot_df_3d: pd.DataFrame
     cluster_keywords: dict[int, list[str]]
     archetype_names: dict[int, str]
@@ -441,6 +443,11 @@ class DreamPipeline:
         Use this once, then save artifacts. For demos, load the saved artifacts
         instead of rebuilding on every start.
         """
+        hdbscan = import_module("hdbscan")
+        umap = import_module("umap")
+        SentenceTransformer = import_module("sentence_transformers").SentenceTransformer
+        normalize = import_module("sklearn.preprocessing").normalize
+
         if not self.data_path:
             raise ValueError("data_path is required to build artifacts from CSV")
 
@@ -596,6 +603,8 @@ class DreamPipeline:
         (target / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
     def load_artifacts(self, artifacts_dir: str | Path | None = None) -> DreamArtifacts:
+        SentenceTransformer = import_module("sentence_transformers").SentenceTransformer
+
         target = Path(artifacts_dir) if artifacts_dir else self.artifacts_dir
         if target is None:
             raise ValueError("artifacts_dir is required")
@@ -626,6 +635,9 @@ class DreamPipeline:
     # -----------------------------
     def predict(self, dream_text: str) -> dict[str, Any]:
         """Predict cluster/archetype and return coordinates for plotting."""
+        approximate_predict = import_module("hdbscan.prediction").approximate_predict
+        normalize = import_module("sklearn.preprocessing").normalize
+
         if self.artifacts is None:
             raise ValueError("Artifacts are not loaded. Call load_artifacts() first.")
 
