@@ -1,0 +1,57 @@
+{
+  "archetype_names": {
+    "46": "Grief & Loss",
+    "42": "Overwhelm / Control Loss",
+    "78": "Identity & Exposure"
+  },
+  "cluster_keywords": {
+    "0": [
+      "man",
+      "said",
+      "saw",
+      "asked",
+      "king",
+      "ordinary",
+      "many",
+      "fray",
+      "luke",
+      "old",
+      "one",
+      "lion"
+    ],
+    "1": [
+      "teeth",
+      "dream",
+      "mouth",
+      "tooth",
+      "one",
+      "like",
+      "dentist",
+      "get",
+      "falling",
+      "back",
+      "felt",
+      "dental"
+    ],
+    "2": [
+      "dream",
+      "like",
+      "one",
+      "get",
+      "house",
+      "people",
+      "remember",
+      "going",
+      "back",
+      "see",
+      "something",
+      "room"
+    ]
+  },
+  "color_map": {
+    "Other / Unlabeled": "lightgray",
+    "Overwhelm / Control Loss": "red",
+    "Identity & Exposure": "green",
+    "Grief & Loss": "purple"
+  }
+}

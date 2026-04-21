@@ -8,9 +8,24 @@ export default function AnalyzePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<null | {
-    emotion: string;
-    confidence: number;
+    input_text: string;
     cluster: number;
+    confidence: number;
+    archetype_name: string;
+    emotion?: {
+      label: string;
+      confidence: number;
+      signals: string[];
+    };
+    plot_point_2d: {
+      x: number;
+      y: number;
+    };
+    plot_point_3d: {
+      x: number;
+      y: number;
+      z: number;
+    };
   }>(null);
 
   async function handleAnalyze() {
@@ -46,6 +61,18 @@ export default function AnalyzePage() {
       setLoading(false);
     }
   }
+
+  const confidencePercent = result
+    ? Math.round(result.confidence <= 1 ? result.confidence * 100 : result.confidence)
+    : 0;
+
+  const displayArchetype =
+    result?.archetype_name === "Other / Unlabeled"
+      ? null
+      : result?.archetype_name;
+  const emotionConfidencePercent = result?.emotion
+    ? Math.round(result.emotion.confidence * 100)
+    : 0;
 
   return (
     <main className="dream-shell">
@@ -89,10 +116,37 @@ export default function AnalyzePage() {
           <div className="dream-result">
             <p className="dream-result-label">You</p>
             <p className="dream-result-copy">{dream}</p>
+
             <p className="dream-result-label">Bot</p>
             <p className="dream-result-copy">
-              This dream feels like <b>{result.emotion}</b> (confidence {" "}
-              {result.confidence}%, cluster {result.cluster}).
+              Dominant emotion: <b>{result.emotion?.label ?? "Mixed / reflective"}</b>
+              {result.emotion
+                ? ` (${emotionConfidencePercent}% signal strength).`
+                : "."}
+            </p>
+
+            {result.emotion?.signals && result.emotion.signals.length > 0 && (
+              <>
+                <p className="dream-result-label">Emotion Signals</p>
+                <p className="dream-result-copy">
+                  {result.emotion.signals.join(", ")}
+                </p>
+              </>
+            )}
+
+            <p className="dream-result-label">Archetype Match</p>
+            <p className="dream-result-copy">
+              {displayArchetype ? (
+                <>
+                  This dream maps most closely to <b>{displayArchetype}</b> (confidence{" "}
+                  {confidencePercent}%, cluster {result.cluster}).
+                </>
+              ) : (
+                <>
+                  No named archetype match yet. This dream landed in unlabeled cluster{" "}
+                  {result.cluster}, so the emotion read above is the clearest result.
+                </>
+              )}
             </p>
           </div>
         )}
