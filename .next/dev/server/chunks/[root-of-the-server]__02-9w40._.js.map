@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/kotha/Downloads/dream-app/app/api/analyze/route.ts"],"sourcesContent":["export async function POST(request: Request) {\r\n  try {\r\n    const body = await request.json();\r\n    const dreamText = body.dreamText;\r\n\r\n    if (!dreamText || !dreamText.trim()) {\r\n      return Response.json(\r\n        { error: \"Dream text is required.\" },\r\n        { status: 400 }\r\n      );\r\n    }\r\n\r\n    return Response.json({\r\n      emotion: \"Fear\",\r\n      confidence: 82,\r\n      cluster: 3,\r\n    });\r\n  } catch {\r\n    return Response.json(\r\n      { error: \"Something went wrong while analyzing the dream.\" },\r\n      { status: 500 }\r\n    );\r\n  }\r\n}"],"names":["POST","request","body","json","dreamText","trim","Response","error","status","emotion","confidence","cluster"],"mappings":";;;;AAAO,eAAeA,KAAKC,OAAgB;IACzC,IAAI;QACF,MAAMC,OAAO,MAAMD,QAAQE,IAAI;QAC/B,MAAMC,YAAYF,KAAKE,SAAS;QAEhC,IAAI,CAACA,aAAa,CAACA,UAAUC,IAAI,IAAI;YACnC,OAAOC,SAASH,IAAI,CAClB;gBAAEI,OAAO;YAA0B,GACnC;gBAAEC,QAAQ;YAAI;QAElB;QAEA,OAAOF,SAASH,IAAI,CAAC;YACnBM,SAAS;YACTC,YAAY;YACZC,SAAS;QACX;IACF,EAAE,OAAM;QACN,OAAOL,SAASH,IAAI,CAClB;YAAEI,OAAO;QAAkD,GAC3D;YAAEC,QAAQ;QAAI;IAElB;AACF"}}]
-}
