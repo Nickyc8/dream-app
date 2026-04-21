@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070214;
+  --foreground: #f5edff;
+  --surface: rgba(18, 8, 44, 0.8);
+  --surface-border: rgba(255, 255, 255, 0.18);
+  --text-soft: #ccb7e9;
+  --accent: #bf86ff;
+  --accent-strong: #7f56f7;
+  --danger: #ff9cb4;
+  --shadow-strong: 0 28px 82px rgba(36, 7, 72, 0.58);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-main);
+  --font-mono: var(--font-accent);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-main), "Segoe UI", sans-serif;
+  background-image:
+    radial-gradient(circle at 10% 18%, rgba(191, 134, 255, 0.34), transparent 42%),
+    radial-gradient(circle at 84% 8%, rgba(140, 94, 255, 0.27), transparent 35%),
+    radial-gradient(circle at 50% 92%, rgba(225, 143, 255, 0.24), transparent 48%),
+    linear-gradient(150deg, #050110 0%, #120428 52%, #1d0a42 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+.dream-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.2rem, 4vw, 3rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.dream-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at center, black 18%, transparent 80%);
+}
+
+.dream-aurora {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+.orb {
+  position: absolute;
+  border-radius: 999px;
+  mix-blend-mode: screen;
+}
+
+.orb-one {
+  width: 33rem;
+  aspect-ratio: 1;
+  top: 2%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(204, 142, 255, 0.9) 0%, transparent 70%);
+  animation: drift 15s ease-in-out infinite;
+}
+
+.orb-two {
+  width: 28rem;
+  aspect-ratio: 1;
+  top: 54%;
+  right: -3%;
+  background: radial-gradient(circle, rgba(130, 96, 255, 0.78) 0%, transparent 68%);
+  animation: drift-reverse 18s ease-in-out infinite;
+}
+
+.orb-three {
+  width: 25rem;
+  aspect-ratio: 1;
+  top: 18%;
+  right: 32%;
+  background: radial-gradient(circle, rgba(244, 151, 255, 0.62) 0%, transparent 70%);
+  animation: pulse 10s ease-in-out infinite;
+}
+
+.dream-card {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  border-radius: 28px;
+  border: 1px solid var(--surface-border);
+  background: linear-gradient(140deg, rgba(28, 12, 58, 0.84), var(--surface));
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-strong);
+  padding: clamp(1.2rem, 3.5vw, 2.5rem);
+  animation: rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dream-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.36),
+    rgba(255, 255, 255, 0) 42%,
+    rgba(210, 169, 255, 0.25)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+}
+
+.dream-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #dcc8f8;
+}
+
+.dream-card h1 {
+  margin: 0.55rem 0 0.6rem;
+  font-family: var(--font-accent), var(--font-main), sans-serif;
+  font-size: clamp(1.8rem, 5.5vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.dream-subtitle {
+  margin: 0 0 1.3rem;
+  max-width: 48ch;
+  color: var(--text-soft);
+  line-height: 1.45;
+}
+
+.dream-input {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(11, 4, 29, 0.72);
+  color: var(--foreground);
+  padding: 1rem 1.1rem;
+  line-height: 1.56;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.dream-input::placeholder {
+  color: rgba(217, 194, 247, 0.7);
+}
+
+.dream-input:focus {
+  border-color: rgba(194, 150, 255, 0.85);
+  box-shadow: 0 0 0 4px rgba(155, 98, 232, 0.24);
+  transform: translateY(-1px);
+}
+
+.dream-button {
+  margin-top: 0.9rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.82rem 1.35rem;
+  background: linear-gradient(96deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: #15062a;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 16px 30px rgba(126, 68, 217, 0.42);
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.dream-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 34px rgba(126, 68, 217, 0.5);
+  filter: brightness(1.03);
+}
+
+.dream-button:active {
+  transform: translateY(0);
+}
+
+.dream-error,
+.dream-loading {
+  margin-top: 0.85rem;
+  font-size: 0.95rem;
+}
+
+.dream-error {
+  color: var(--danger);
+}
+
+.dream-loading {
+  color: #e2c9ff;
+}
+
+.dream-result {
+  margin-top: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.21);
+  padding: 1rem 1.08rem;
+  background: rgba(130, 78, 223, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.17);
+}
+
+.dream-result-label {
+  margin: 0.1rem 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #ceb4f7;
+}
+
+.dream-result-copy {
+  margin: 0 0 0.72rem;
+  line-height: 1.55;
+  color: #f3e7ff;
+  overflow-wrap: anywhere;
+}
+
+.dream-result-copy:last-child {
+  margin-bottom: 0;
+}
+
+.dream-result b {
+  color: #ffd8ff;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(28px, -22px, 0) scale(1.11);
+  }
+}
+
+@keyframes drift-reverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-24px, 16px, 0) scale(1.08);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.95;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 700px) {
+  .dream-card {
+    border-radius: 22px;
+    padding: 1.1rem;
+  }
+
+  .dream-input {
+    min-height: 160px;
+  }
+
+  .orb-one {
+    width: 23rem;
+  }
+
+  .orb-two {
+    width: 20rem;
+  }
+
+  .orb-three {
+    width: 16rem;
+    right: 20%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dream-card,
+  .orb-one,
+  .orb-two,
+  .orb-three {
+    animation: none;
+  }
+
+  .dream-button,
+  .dream-input {
+    transition: none;
+  }
+}
