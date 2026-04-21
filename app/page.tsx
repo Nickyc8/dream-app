@@ -37,54 +37,58 @@ export default function Home() {
       }
 
       setResult(data);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong.";
+      setError(message);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main style={{ maxWidth: "700px", margin: "40px auto", padding: "20px" }}>
-      <h1>Dream Emotion Analyzer</h1>
+    <main className="dream-shell">
+      <div className="dream-aurora" aria-hidden="true">
+        <span className="orb orb-one" />
+        <span className="orb orb-two" />
+        <span className="orb orb-three" />
+      </div>
+      <div className="dream-grid" aria-hidden="true" />
 
-      <textarea
-        value={dream}
-        onChange={(e) => setDream(e.target.value)}
-        placeholder="Type your dream here..."
-        rows={8}
-        style={{ width: "100%", marginTop: "20px", padding: "12px" }}
-      />
+      <section className="dream-card">
+        <p className="dream-kicker">Dream Signal Reader</p>
+        <h1>Dream Emotion Analyzer</h1>
+        <p className="dream-subtitle">
+          Share a dream and get a fast emotional read from the analyzer.
+        </p>
 
-      <button
-        onClick={handleAnalyze}
-        style={{ marginTop: "12px", padding: "10px 16px", cursor: "pointer" }}
-      >
-        Analyze Dream
-      </button>
+        <textarea
+          value={dream}
+          onChange={(e) => setDream(e.target.value)}
+          placeholder="Type your dream here..."
+          rows={8}
+          className="dream-input"
+        />
 
-      {error && <p style={{ marginTop: "16px", color: "red" }}>{error}</p>}
+        <button onClick={handleAnalyze} className="dream-button">
+          Analyze Dream
+        </button>
 
-      {loading && <p style={{ marginTop: "16px" }}>Analyzing dream...</p>}
+        {error && <p className="dream-error">{error}</p>}
 
-      {result && (
-        <div
-          style={{
-            marginTop: "24px",
-            padding: "16px",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-          }}
-        >
-          <p>
-            <strong>You:</strong> {dream}
-          </p>
-          <p>
-            <strong>Bot:</strong> This dream feels like <b>{result.emotion}</b>{" "}
-            (confidence {result.confidence}%, cluster {result.cluster}).
-          </p>
-        </div>
-      )}
+        {loading && <p className="dream-loading">Analyzing dream...</p>}
+
+        {result && (
+          <div className="dream-result">
+            <p className="dream-result-label">You</p>
+            <p className="dream-result-copy">{dream}</p>
+            <p className="dream-result-label">Bot</p>
+            <p className="dream-result-copy">
+              This dream feels like <b>{result.emotion}</b> (confidence {" "}
+              {result.confidence}%, cluster {result.cluster}).
+            </p>
+          </div>
+        )}
+      </section>
     </main>
   );
 }
