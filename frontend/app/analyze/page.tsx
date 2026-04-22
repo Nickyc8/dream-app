@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
+const LATEST_DREAM_STORAGE_KEY = "dreamcatcher:last-analysis";
+
 export default function AnalyzePage() {
   const [dream, setDream] = useState("");
   const [loading, setLoading] = useState(false);
@@ -52,6 +54,19 @@ export default function AnalyzePage() {
       if (!response.ok) {
         throw new Error(data.error || "Request failed");
       }
+
+      window.localStorage.setItem(
+        LATEST_DREAM_STORAGE_KEY,
+        JSON.stringify({
+          x: data.plot_point_3d.x,
+          y: data.plot_point_3d.y,
+          z: data.plot_point_3d.z,
+          cluster: data.cluster,
+          archetypeName: data.archetype_name,
+          emotion: data.emotion?.label ?? "Mixed / reflective",
+          text: dream,
+        })
+      );
 
       setResult(data);
     } catch (err: unknown) {
@@ -148,6 +163,10 @@ export default function AnalyzePage() {
                 </>
               )}
             </p>
+
+            <Link href="/#dream-universe" className="dream-map-link">
+              Show me this dream on the universe map
+            </Link>
           </div>
         )}
       </section>
